@@ -1,4 +1,4 @@
-const BASE = process.env.NEXT_PUBLIC_API_URL || "https://othello-backend-abc123.onrender.com";
+const BASE = process.env.NEXT_PUBLIC_API_URL || "https://ai-othello-4pw9.onrender.com";
 
 export type BoardResponse = {
   board: number[][];
