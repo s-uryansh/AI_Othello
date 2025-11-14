@@ -8,7 +8,7 @@ Players can play against different AI strategies such as **Random, Greedy, Minim
 ## Clone the Repository
 
 ```sh
-git clone <your_repo_url>
+git clone https://github.com/s-uryansh/AI_Othello.git
 cd AI_Othello
 ```
 
