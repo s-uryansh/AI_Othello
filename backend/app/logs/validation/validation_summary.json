@@ -1,0 +1,45 @@
+{
+    "random": {
+        "a1": "minimax",
+        "a2": "random",
+        "games": 4,
+        "wins": {
+            "minimax": 0,
+            "random": 4,
+            "draws": 0
+        },
+        "avg_move_time": {
+            "minimax": 0.08525171042770469,
+            "random": 5.097203357245332e-05
+        },
+        "avg_score_diff": -27.0
+    },
+    "greedy": {
+        "a1": "minimax",
+        "a2": "greedy",
+        "games": 4,
+        "wins": {
+            "minimax": 0,
+            "greedy": 0,
+            "draws": 4
+        },
+        "avg_move_time": {
+            "minimax": 0.12761156789718137,
+            "greedy": 0.0012667596340179444
+        },
+        "avg_score_diff": 0.0
+    },
+    "minimax": {
+        "a1": "minimax",
+        "a2": "minimax",
+        "games": 4,
+        "wins": {
+            "minimax": 4,
+            "draws": 0
+        },
+        "avg_move_time": {
+            "minimax": 0.04693661870494966
+        },
+        "avg_score_diff": -44.0
+    }
+}

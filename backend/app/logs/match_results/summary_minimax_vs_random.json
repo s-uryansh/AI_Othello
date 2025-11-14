@@ -1,0 +1,15 @@
+{
+    "a1": "minimax",
+    "a2": "random",
+    "games": 4,
+    "wins": {
+        "minimax": 0,
+        "random": 4,
+        "draws": 0
+    },
+    "avg_move_time": {
+        "minimax": 0.08525171042770469,
+        "random": 5.097203357245332e-05
+    },
+    "avg_score_diff": -27.0
+}

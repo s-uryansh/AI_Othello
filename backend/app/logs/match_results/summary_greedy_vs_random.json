@@ -1,0 +1,15 @@
+{
+    "a1": "greedy",
+    "a2": "random",
+    "games": 3,
+    "wins": {
+        "greedy": 1,
+        "random": 2,
+        "draws": 0
+    },
+    "avg_move_time": {
+        "greedy": 0.001200496338601608,
+        "random": 4.8938703366077924e-05
+    },
+    "avg_score_diff": -4.666666666666667
+}

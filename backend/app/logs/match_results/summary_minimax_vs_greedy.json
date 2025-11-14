@@ -1,0 +1,15 @@
+{
+    "a1": "minimax",
+    "a2": "greedy",
+    "games": 4,
+    "wins": {
+        "minimax": 0,
+        "greedy": 0,
+        "draws": 4
+    },
+    "avg_move_time": {
+        "minimax": 0.12761156789718137,
+        "greedy": 0.0012667596340179444
+    },
+    "avg_score_diff": 0.0
+}
