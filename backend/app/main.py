@@ -11,10 +11,10 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,          
+    allow_origins=["*"], 
     allow_credentials=True,
-    allow_methods=["*"],            
-    allow_headers=["*"],            
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(routes_game.router, prefix="/api/v1/game", tags=["Game"])
