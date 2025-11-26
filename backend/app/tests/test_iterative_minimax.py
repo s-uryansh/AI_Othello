@@ -17,5 +17,5 @@ def test_time_limit_respected():
     start = time.time()
     mv, score = agent.best_move(b, BLACK)
     elapsed = time.time() - start
-    assert elapsed < 1.0  # should finish quickly (tight budget)
+    assert elapsed < 1.0  
     assert (mv is None) or (mv in b.legal_moves(BLACK))

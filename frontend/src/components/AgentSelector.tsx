@@ -2,7 +2,14 @@
 import React from "react";
 
 export default function AgentSelector({ value, onChange }: { value: string; onChange: (v: string) => void }) {
-  const agents = ["random", "greedy", "minimax", "mcts", "hybrid"];
+const agents = [
+  "random",
+  "greedy",
+  "minimax",
+  "minimax_ga",
+  "mcts",
+  "hybrid"
+];
   return (
     <div className="flex items-center gap-2">
       <label className="text-sm">Agent</label>

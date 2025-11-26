@@ -5,7 +5,6 @@ from app.core.eval.features import extract_features
 
 class Evaluator:
     def __init__(self, weights: Dict[str, float] | None = None) -> None:
-        # Default weights safe starting point
         self.weights = weights or {
             "disc_diff": 1.0,
             "mobility": 5.0,
@@ -18,5 +17,4 @@ class Evaluator:
         """Compute board evaluation based on weighted feature sum."""
         feats = extract_features(board)
         score = sum(self.weights.get(k, 0.0) * v for k, v in feats.items())
-        # Always return from black's perspective
         return float(score if player == BLACK else -score)

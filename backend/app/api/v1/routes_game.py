@@ -13,7 +13,6 @@ import json
 
 router = APIRouter()
 
-# In-memory games store (simple demo)
 GAMES = {}
 
 AGENT_FACTORY = {
@@ -22,6 +21,7 @@ AGENT_FACTORY = {
     "minimax": MinimaxAgent,
     "mcts": MCTSAgent,
     "hybrid": HybridAgent,
+    "minimax_ga": MinimaxAgent,
 }
 
 
@@ -35,7 +35,7 @@ def _make_agent_by_name(name: str, evaluator: Evaluator, time_limit: float):
         return cls()
     if name == "greedy":
         return cls(evaluator)
-    if name == "minimax":
+    if name == "minimax" or name == "minimax_ga":
         return cls(evaluator, max_depth=4, time_limit=time_limit)
     if name == "mcts":
         return cls(evaluator, simulations=400, time_limit=time_limit)
@@ -103,21 +103,26 @@ def ai_move(game_id: str, agent: Optional[str] = Query("minimax"), time: float =
     if not board:
         raise HTTPException(status_code=404, detail="Game not found")
 
-    ev = Evaluator()
+    if (agent or "").lower() == "minimax_ga":
+        try:
+            from app.api.services.validate_agent import load_trained_evaluator
+            ev = load_trained_evaluator()
+        except Exception:
+            ev = Evaluator()  
+    else:
+        ev = Evaluator()
+
     try:
         ai = _make_agent_by_name(agent or "minimax", ev, time_limit=time)
     except ValueError:
         raise HTTPException(status_code=400, detail="Unknown agent")
 
-    # Ask agent for best move (agent should respect board.legal_moves)
     mv, score = ai.best_move(board, board.to_move)
 
-    # Defensive: if agent returned an illegal move, treat as pass (shouldn't happen)
     if mv is not None:
         try:
             board.apply_move(mv, board.to_move)
         except ValueError:
-            # log in debug; force a pass to keep game consistent
             board.apply_move(None, board.to_move)
             mv = None
     else:

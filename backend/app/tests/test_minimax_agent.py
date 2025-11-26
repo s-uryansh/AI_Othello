@@ -14,7 +14,6 @@ def test_minimax_play_sequence():
     b = Board()
     ev = Evaluator()
     agent = MinimaxAgent(evaluator=ev, max_depth=2)
-    # play 4 full plies (2 moves)
     for _ in range(2):
         mv, _ = agent.best_move(b, b.to_move)
         if mv is None:

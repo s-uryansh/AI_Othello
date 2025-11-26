@@ -52,7 +52,7 @@ class GATrainer:
         """Play against opponent agent and return average score difference."""
         evaluator = Evaluator(weights)
         runner = MatchRunner(self.base_agent, self.opponent_agent, games=2, time_limit=1.0, log=False)
-        runner.agent1.evaluator = evaluator  # plug-in our evolving evaluator
+        runner.agent1.evaluator = evaluator 
         results = runner.run()
         return results["avg_score_diff"]
 
@@ -60,7 +60,8 @@ class GATrainer:
         """Run the GA evolution loop."""
         population = [self._random_weights() for _ in range(self.population_size)]
 
-        best_weights = None
+        # Ensure we always have a valid Dict[str,float] to return (avoid None)
+        best_weights: Dict[str, float] = population[0]
         best_score = float("-inf")
 
         for gen in range(1, self.generations + 1):
@@ -71,17 +72,14 @@ class GATrainer:
                 scored_pop.append((w, score))
                 print(f"Candidate {w} → fitness {score:.2f}")
 
-            # sort best to worst
             scored_pop.sort(key=lambda x: x[1], reverse=True)
             if scored_pop[0][1] > best_score:
                 best_score = scored_pop[0][1]
                 best_weights = scored_pop[0][0]
 
-            # select top 50% for breeding
             survivors = [w for w, _ in scored_pop[: self.population_size // 2]]
             new_population = survivors.copy()
 
-            # crossover + mutation to repopulate
             while len(new_population) < self.population_size:
                 p1, p2 = random.sample(survivors, 2)
                 child = self._crossover(p1, p2)
@@ -96,5 +94,5 @@ class GATrainer:
         out_file = os.path.join(LOG_DIR, "trained_weights.json")
         with open(out_file, "w") as f:
             json.dump(best_weights, f, indent=4)
-        print(f"\n✅ Training complete. Best weights saved to {out_file}")
+        print(f"\nTraining complete. Best weights saved to {out_file}")
         return best_weights

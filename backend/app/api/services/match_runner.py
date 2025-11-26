@@ -81,7 +81,7 @@ class MatchRunner:
                     log_lines.append(f"{agent_name} ({'BLACK' if player == BLACK else 'WHITE'}) passes.\n")
                     continue
 
-                # safely apply move (catch illegal ones)
+                # safely apply move 
                 try:
                     b.apply_move(mv, player)
                     log_lines.append(
@@ -89,11 +89,9 @@ class MatchRunner:
                     )
                 except ValueError:
                     log_lines.append(f"[!] {agent_name} attempted illegal move {mv}, skipping.\n")
-                    # force a pass to preserve valid game flow
                     b.apply_move(None, player)
                     continue
 
-            # Game over — calculate results
             b_score, w_score = b.score()
             diff = b_score - w_score
             all_diffs.append(diff)
@@ -115,18 +113,15 @@ class MatchRunner:
 
             log_lines.append(f"Final: BLACK {b_score} - WHITE {w_score}  |  {outcome}\n")
 
-            # save per-game log
             if self.log:
                 fname = f"{LOG_DIR}/match_{self.a1_name}_vs_{self.a2_name}_{g}.log"
                 with open(fname, "w") as f:
                     f.writelines(log_lines)
 
-        # Aggregate statistics
         self.results["avg_score_diff"] = sum(all_diffs) / len(all_diffs)
         self.results["avg_move_time"][self.a1_name] /= self.games
         self.results["avg_move_time"][self.a2_name] /= self.games
 
-        # Save summary
         if self.log:
             summary_file = f"{LOG_DIR}/summary_{self.a1_name}_vs_{self.a2_name}.json"
             with open(summary_file, "w") as f:

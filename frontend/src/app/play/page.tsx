@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import BoardDisplay from "@/components/BoardDisplay";
 import AgentSelector from "@/components/AgentSelector";
 import MoveLog from "@/components/MoveLog";
-import { createGame, makeMove, aiMove } from "@/lib/api";
+import { createGame, makeMove, aiMove, BASE } from "@/lib/api";
 
 type Move = [number, number];
 const BLACK = 1;
@@ -50,13 +50,13 @@ export default function PlayPage() {
       random: "Chooses moves randomly.",
       greedy: "Maximizes immediate flips.",
       minimax: "Searches future positions for best outcome.",
+      minimax_ga: "Minimax using GA-trained evaluator weights.",
       mcts: "Uses Monte Carlo rollouts to evaluate outcomes.",
       hybrid: "Greedy filter + Minimax + optional MCTS refinement."
     };
     setAgentDescription(map[agent] || "");
   }, [agent]);
 
-  /* ----------------------- AUTO-SCROLL LOG ----------------------- */
   useEffect(() => {
     if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
   }, [log]);
@@ -90,7 +90,7 @@ export default function PlayPage() {
 
     setLog((x) => [...x, "Human skips turn"]);
 
-    const res = await makeMove(gameId); // pass: backend handles it
+    const res = await makeMove(gameId);
     updateFromServer(res, null);
 
     if (res.to_move === WHITE && !winnerInfo) {
@@ -164,6 +164,21 @@ export default function PlayPage() {
         <div className="flex items-center gap-4 w-full justify-between">
           <button onClick={() => location.reload()} className="px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded">
             New Game
+          </button>
+
+          <button
+            onClick={async () => {
+              try {
+                await fetch(`${BASE}/api/v1/training/train`, { method: "POST" });
+                alert("Training started (runs in background)");
+              } catch (err) {
+                console.error("Training request failed", err);
+                alert("Failed to start training");
+              }
+            }}
+            className="px-3 py-1 bg-orange-600 hover:bg-orange-700 rounded"
+          >
+            Train GA
           </button>
 
           <AgentSelector value={agent} onChange={setAgent} />

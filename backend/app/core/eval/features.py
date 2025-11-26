@@ -6,14 +6,11 @@ def extract_features(board: Board) -> Dict[str, float]:
     """Return a dictionary of board features used for evaluation."""
     feats: Dict[str, float] = {}
 
-    # Disc difference
     b_count, w_count = board.score()
     feats["disc_diff"] = b_count - w_count
 
-    # Mobility
     feats["mobility"] = len(board.legal_moves(BLACK)) - len(board.legal_moves(WHITE))
 
-    # Corner occupancy
     corners = [(0,0),(0,7),(7,0),(7,7)]
     corner_score = 0
     for (r,c) in corners:
@@ -24,7 +21,6 @@ def extract_features(board: Board) -> Dict[str, float]:
             corner_score -= 1
     feats["corner_occupancy"] = corner_score
 
-    # Corner adjacency (squares next to corners)
     adjacents = [
         (0,1),(1,0),(1,1),
         (0,6),(1,7),(1,6),
@@ -40,7 +36,6 @@ def extract_features(board: Board) -> Dict[str, float]:
             adj_penalty += 1
     feats["corner_adj"] = adj_penalty
 
-    # Frontier discs — discs adjacent to empty squares
     frontier_black = frontier_white = 0
     dirs = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
     for r in range(board.size):

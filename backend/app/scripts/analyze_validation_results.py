@@ -1,7 +1,19 @@
 from __future__ import annotations
 import json
 import os
-import matplotlib.pyplot as plt
+import sys
+
+try:
+    import matplotlib.pyplot as plt
+except Exception:
+    print(
+        "Skipping plot generation: 'matplotlib' is not installed.\n"
+        "Install it with: pip install matplotlib\n"
+        "Or install all backend deps: pip install -r backend/requirements.txt",
+        file=sys.stderr,
+    )
+    # exit gracefully so wrappers (CI / helper scripts) continue
+    sys.exit(0)
 
 VALIDATION_LOG = "app/logs/validation/validation_summary.json"
 OUTPUT_DIR = "app/logs/validation/plots"
@@ -52,7 +64,7 @@ def analyze():
     plt.savefig(diff_path, dpi=120, bbox_inches="tight")
     plt.close()
 
-    print(f"✅ Charts saved to:\n  - {winrate_path}\n  - {diff_path}")
+    print(f" Charts saved to:\n  - {winrate_path}\n  - {diff_path}")
 
 if __name__ == "__main__":
     analyze()

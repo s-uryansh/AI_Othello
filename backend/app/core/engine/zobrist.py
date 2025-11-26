@@ -2,7 +2,6 @@ from __future__ import annotations
 import random
 from typing import List
 
-# Deterministic seed for reproducibility
 SEED = 0xC0FFEE
 random.seed(SEED)
 
@@ -10,7 +9,6 @@ ZOBRIST_TABLE: List[List[List[int]]] = [
     [ [random.getrandbits(64) for _ in range(2)] for _ in range(8) ]
     for _ in range(8)
 ]
-# side to move random value
 ZOBRIST_SIDE = random.getrandbits(64)
 
 
